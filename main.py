@@ -1,36 +1,26 @@
 import json
 
-
-# followers
-f = open('./data/followers_1.json')
-
-data = json.load(f)
+# Membaca data followers
+with open('./data/followers_1.json') as f:
+    followers_data = json.load(f)
 
 follower = []
-
-for i in data:
-    for j in i["string_list_data"]:
+for item in followers_data:
+    for j in item["string_list_data"]:
         follower.append(j["value"])
-        
 
-# following
-f = open('./data/following.json')
-
-data = json.load(f)
+# Membaca data following
+with open('./data/following.json') as f:
+    following_data = json.load(f)
 
 following = []
-
-for i in data["relationships_following"]:
-    for j in i["string_list_data"]:
+for item in following_data["relationships_following"]:
+    for j in item["string_list_data"]:
         following.append(j["value"])
 
-# main
-goodpeople = []
+# Menemukan orang yang diikuti tetapi tidak mengikuti balik
+not_following_back = [user for user in following if user not in follower]
 
-for i in following:
-    if i in follower:
-        goodpeople.append(i)
-
-for i in following:
-    if i not in goodpeople:
-        print("https://www.instagram.com/" + i)
+# Mencetak hasil
+for user in not_following_back:
+    print("https://www.instagram.com/" + user)
